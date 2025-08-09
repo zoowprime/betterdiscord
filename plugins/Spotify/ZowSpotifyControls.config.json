@@ -1,5 +1,5 @@
 {
-  "name": "YoteiSpotifyControls",
+  "name": "ZowSpotifyControls",
   "version": "1.0.0",
   "author": "zow.py",
   "description": "Minimal Spotify control bar in the Discord channel panel (no external library).",
