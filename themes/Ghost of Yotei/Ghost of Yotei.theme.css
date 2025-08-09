@@ -1,0 +1,207 @@
+
+/**
+ * @name Ghost of Yotei (Translucence Base)
+ * @author zow.py
+ * @version 3.0.0
+ * @description Translucent/frosted look inspired by Translucence, with Mt. Yotei wallpaper, glass chat bubbles, soft palette, and avatar alignment fixes.
+ * @source https://github.com/zoowprime/betterdiscord/tree/main/themes
+ * @updateUrl https://raw.githubusercontent.com/zoowprime/betterdiscord/main/themes/Ghost%20of%20Yotei.theme.css
+ */
+
+/* ===== Base Translucence by CapnKitten ===== */
+@import url(https://capnkitten.github.io/BetterDiscord/Themes/Translucence/css/source.css);
+
+/* =========================================================
+   Ghost of Yotei — overrides de variables + finitions
+   ========================================================= */
+:root {
+	/* —— Fond de l’app —— */
+	--app-bg: url(https://i.imgur.com/K2gnTab.png);
+	--app-blur: 8px;
+	--app-margin: 24px;     /* cadre doux autour de l’app (0 si tu veux bord à bord) */
+	--app-radius: 12px;     /* arrondi du cadre global */
+
+	/* —— Accent & texte —— */
+	--accent-hue: 220;                 /* bleu froid */
+	--accent-saturation: 86%;
+	--accent-lightness: 72%;
+	--accent-opacity: 1;
+	--accent-text-color: hsl(0 0% 0%); /* lisible sur accent clair */
+
+	/* —— Zones principales —— */
+	--sidebar-color: hsl(0 0% 0% / 0.40);
+	--main-content-color: hsl(0 0% 0% / 0.24);
+
+	/* —— Messages (bulles) —— */
+	--message-color: hsl(0 0% 0% / 0.42);
+	--message-radius: 14px;
+	--message-padding-top: 10px;
+	--message-padding-side: 12px;
+
+	/* —— Couleur des replies/mentions —— */
+	--reply-hue: 220;
+	--reply-saturation: 86%;
+	--reply-lightness: 72%;
+	--reply-opacity: 0.25;
+
+	/* —— Zone de saisie —— */
+	--textarea-color: 255,255,255;
+	--textarea-alpha: 0.10;
+	--textarea-alpha-focus: 0.16;
+	--textarea-text-color: hsl(0 0% 100%);
+	--textarea-radius: 14px;
+
+	/* —— Cartes/popouts —— */
+	--card-color: hsl(0 0% 0% / 0.42);
+	--card-color-hover: hsl(0 0% 0% / 0.52);
+	--card-color-select: hsl(0 0% 0% / 0.70);
+
+	/* —— Boutons —— */
+	--button-height: 32px;
+	--button-padding: 0 16px;
+	--button-action-color: hsl(0 0% 0%);
+	--button-radius: 16px;
+}
+
+/* Thème sombre — teintes lisibles */
+.visual-refresh.theme-dark {
+	--text-primary: hsl(0 0% 98%);
+	--text-secondary: hsl(0 0% 78%);
+
+	--channels-default: hsl(0 0% 72%);
+	--channel-icon: hsl(0 0% 72%);
+
+	--icon-primary: hsl(0 0% 96%);
+	--icon-secondary: hsl(0 0% 86%);
+	--icon-tertiary: hsl(0 0% 73%);
+
+	--interactive-normal: hsl(0 0% 80%);
+	--interactive-hover: hsl(0 0% 92%);
+	--interactive-active: hsl(0 0% 100%);
+	--interactive-muted: hsl(0 0% 43%);
+
+	--background-modifier-hover: hsl(0 0% 100% / 0.075);
+	--background-modifier-selected: hsl(0 0% 100% / 0.12);
+}
+
+/* =========================================================
+   Finitions Yotei : bulles + verre + avatars + hovers
+   (ces règles complètent Translucence)
+   ========================================================= */
+
+/* Bulles un peu plus “verre” et aérées */
+[class*="messageListItem"] > [class*="message-"],
+[class*="messageListItem"] article {
+	backdrop-filter: blur(12px) saturate(120%);
+	-webkit-backdrop-filter: blur(12px) saturate(120%);
+	border: 1px solid hsl(0 0% 100% / 0.08);
+	box-shadow: 0 8px 22px rgba(0,0,0,.28);
+	transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+[class*="messageListItem"] > [class*="message-"]:hover,
+[class*="messageListItem"] article:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 12px 26px rgba(0,0,0,.32);
+}
+
+/* Décalage pour avatar (cozy) */
+[class*="cozyMessage"] > [class*="message-"],
+[class*="cozyMessage"] article {
+	margin-left: 56px;
+}
+
+/* Avatars bien alignés et non rognés */
+[class*="cozyMessage"] [class*="avatar-"],
+[class*="cozyMessage"] [class*="avatarDecoration"],
+[class*="messageListItem"] [class*="avatar-"] {
+	position: absolute !important;
+	left: 12px !important;
+	top: 0 !important;
+	transform: translateY(6px);
+	width: 40px !important; height: 40px !important;
+	border-radius: 50% !important;
+	object-fit: cover !important;
+	z-index: 2 !important;
+	box-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+[class*="messageListItem"] {
+	position: relative; min-height: 52px; display: block;
+}
+
+/* Mentions plus douces */
+[class*="mentioned-"] {
+	background: color-mix(in hsl, hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness)) 16%, transparent) !important;
+	border-left: 3px solid hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness)) !important;
+	padding-left: 10px;
+	border-top-left-radius: var(--message-radius);
+	border-bottom-left-radius: var(--message-radius);
+}
+
+/* Embeds / pièces jointes assortis */
+[class*="embedWrapper-"],
+[class*="attachment-"],
+[class*="container-"][class*="embed"],
+[class*="fileWrapper-"] {
+	background: hsl(0 0% 0% / 0.42) !important;
+	border: 1px solid hsl(0 0% 100% / 0.08) !important;
+	border-radius: 12px !important;
+	backdrop-filter: blur(8px) !important;
+	-webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Barres système (dates) */
+[class*="divider-"] {
+	background: rgba(0,0,0,.28) !important;
+	backdrop-filter: blur(6px) !important;
+	-webkit-backdrop-filter: blur(6px) !important;
+	border-radius: 999px !important;
+	padding: 2px 10px !important;
+}
+
+/* Zone de saisie en verre doux */
+[class*="form-"],
+[class*="scrollableContainer"],
+[class*="searchBar-"] {
+	border: 1px solid hsl(0 0% 100% / 0.08);
+	border-radius: 12px;
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+/* Hovers liste de canaux */
+[class*="containerDefault-"] [class*="link-"] { border-radius: 10px; }
+[class*="modeSelected"] > [class*="link-"],
+[class*="modeSelected"] {
+	background: color-mix(in hsl, hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness)) 18%, transparent) !important;
+}
+[class*="modeUnreadImportant"] > [class*="link-"] {
+	background: color-mix(in hsl, hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness)) 14%, transparent) !important;
+}
+[class*="containerDefault-"] [class*="link-"]:hover {
+	background: color-mix(in hsl, hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness)) 16%, transparent) !important;
+}
+
+/* Scrollbars discrètes */
+:root *::-webkit-scrollbar { width: 10px; height: 10px; }
+:root *::-webkit-scrollbar-thumb {
+	background: rgba(255,255,255,.18);
+	border: 2px solid transparent;
+	border-radius: 999px;
+	background-clip: padding-box;
+}
+:root *::-webkit-scrollbar-track { background: transparent; }
+
+/* =========================================================
+   Fallback fond (si jamais l'import échoue)
+   ========================================================= */
+html, body { background: transparent !important; }
+#app-mount { position: relative; z-index: 0; }
+#app-mount::after {
+	content: "";
+	position: fixed;
+	inset: 0;
+	background: var(--app-bg) no-repeat center / cover fixed;
+	filter: blur(var(--app-blur));
+	z-index: -1;
+	pointer-events: none;
+}
