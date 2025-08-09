@@ -1,2 +1,4 @@
-# betterdiscord
-A collection of custom BetterDiscord themes and plugins. Enhance your Discord experience with unique designs, smooth glass effects, and functional plugins — all crafted with style and performance in mind.
+# BetterDiscord Themes & Plugins by zow.py
+Enhance your Discord experience with custom themes and functional plugins crafted for style, clarity, and performance.
+All creations here are designed for BetterDiscord and are free to use.
+
