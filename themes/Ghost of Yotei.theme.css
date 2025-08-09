@@ -1,0 +1,264 @@
+/**
+ * @name Ghost of Yotei
+ * @author zow.py
+ * @version 1.0.1
+ * @description ClearVision v7 + bulles de messages effet verre/flou, palette douce et fond perso (Mt. Yotei vibes). Inclut correctifs d’avatars.
+ * @source https://github.com/ClearVision/ClearVision-v7
+ * @website https://clearvision.github.io
+ * @invite dHaSxn3
+ */
+
+/* --- ClearVision v7 --- */
+@import url("https://clearvision.github.io/ClearVision-v7/main.css");
+@import url("https://clearvision.github.io/ClearVision-v7/betterdiscord.css");
+
+/* =========================
+   OVERRIDES & RÉGLAGES GLOBAUX
+   ========================= */
+:root {
+  /* --- IMAGE DE FOND --- */
+  --background-image: url("https://i.imgur.com/K2gnTab.png") !important;
+  --background-position: center !important;
+  --background-size: cover !important;
+  --background-attachment: fixed !important;
+
+  /* Moins d’assombrissement ClearVision pour mieux voir l’image (0% → 100%) */
+  --background-shading-percent: 25% !important;
+
+  /* Filtre général appliqué au fond (ajoute blur(2px) si tu veux un fond plus soft) */
+  --background-filter: saturate(calc(var(--saturation-factor, 1) * 1))
+                       brightness(1)
+                       contrast(1);
+
+  /* --- PALETTE + LISIBILITÉ --- */
+  /* Accent très doux (neutre/froid) */
+  --main-color: #86a3ff !important;
+  --hover-color: #6c88e6 !important;
+  --success-color: #58c49a !important;
+  --danger-color: #b85b5b !important;
+
+  /* Texte moins agressif */
+  --normal-text: #e7e7ea !important;
+  --muted-text: #b7b7bf !important;
+
+  /* États de canaux */
+  --channel-selected-bg: color-mix(in hsl, var(--main-color) 32%, transparent) !important;
+  --channel-unread: var(--main-color) !important;
+  --channel-unread-hover: var(--hover-color) !important;
+
+  /* --- PARAMS “BULLES” --- */
+  --bubble-bg: rgba(20, 22, 26, 0.46);
+  --bubble-border: rgba(255, 255, 255, 0.08);
+  --bubble-radius: 14px;
+  --bubble-blur: 10px;
+  --bubble-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+
+  /* Densité d’espacement vertical entre messages (px) */
+  --bubble-gap: 8px;
+
+  /* Intensité du verre dépoli pour zones système */
+  --chrome-bg: rgba(12, 14, 18, 0.38);
+  --chrome-blur: 8px;
+  --chrome-border: rgba(255, 255, 255, 0.06);
+}
+
+/* =========================
+   TRANSPARENCE DE BASE
+   ========================= */
+[class*="app-"],
+[class*="layers-"],
+[class*="content-"],
+[class*="sidebar-"],
+[class*="chat-"],
+[class*="messagesWrapper"],
+[class*="scrollerInner-"],
+[class*="container-"] {
+  background: transparent !important;
+}
+
+/* En-têtes/footers/panneaux “chrome” en verre */
+[class*="title-"],
+[class*="panels-"],
+[class*="containerWithMargin"],
+[class*="membersWrap"],
+[class*="sidebarRegion-"] {
+  background: var(--chrome-bg) !important;
+  backdrop-filter: blur(var(--chrome-blur)) !important;
+  -webkit-backdrop-filter: blur(var(--chrome-blur)) !important;
+  border-bottom: 1px solid var(--chrome-border) !important;
+}
+
+/* =========================
+   BULLES DE MESSAGES
+   ========================= */
+/* Fait en sorte que chaque item puisse afficher l’avatar sans rognage */
+[class*="messageListItem"],
+[class*="messageListItem"] > *,
+[class*="messageListItem"] > [class*="message-"],
+[class*="messageListItem"] article {
+  overflow: visible !important;
+}
+
+/* Réserve de l’espace à gauche pour l’avatar (cozy layout) */
+[class*="cozyMessage"] [class*="messageContent-"],
+[class*="cozyMessage"] [class*="contents-"] {
+  position: relative;
+}
+
+[class*="messageListItem"] > [class*="message-"],
+[class*="messageListItem"] article,
+[class*="groupStart"] > [class*="message-"] {
+  background: var(--bubble-bg) !important;
+  backdrop-filter: blur(var(--bubble-blur)) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(var(--bubble-blur)) saturate(120%) !important;
+  border: 1px solid var(--bubble-border) !important;
+  border-radius: var(--bubble-radius) !important;
+  box-shadow: var(--bubble-shadow) !important;
+  padding: 10px 12px !important;
+  margin: var(--bubble-gap) 6px !important;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+
+/* Décale légèrement la bulle pour laisser l’avatar respirer */
+[class*="cozyMessage"] > [class*="message-"],
+[class*="cozyMessage"] article {
+  margin-left: 56px !important; /* largeur avatar (40) + marge */
+}
+
+/* Hover subtil sur la bulle */
+[class*="messageListItem"] > [class*="message-"]:hover,
+[class*="messageListItem"] article:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(0,0,0,0.32);
+}
+
+/* Contenu plus aéré */
+[class*="messageContent-"] {
+  line-height: 1.55 !important;
+  letter-spacing: 0.1px !important;
+}
+
+/* =========================
+   AVATARS — correctifs placement/rognage
+   ========================= */
+[class*="cozyMessage"] [class*="avatar-"],
+[class*="cozyMessage"] [class*="avatarDecoration"],
+[class*="messageListItem"] [class*="avatar-"] {
+  position: absolute !important;
+  left: 12px !important;
+  top: 0 !important;
+  transform: translateY(6px); /* centre vertical approximatif vis-à-vis de la bulle */
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  z-index: 2 !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+
+/* S’assure que la ligne de message laisse passer l’avatar */
+[class*="messageListItem"] {
+  position: relative !important;
+  min-height: 52px; /* avatar 40 + marges */
+  display: block !important;
+}
+
+/* =========================
+   MENTIONS / EMBEDS / DIVERS
+   ========================= */
+[class*="mentioned-"] {
+  background: color-mix(in hsl, var(--main-color) 16%, transparent) !important;
+  border-left: 3px solid var(--main-color) !important;
+  padding-left: 10px !important;
+  border-top-left-radius: var(--bubble-radius) !important;
+  border-bottom-left-radius: var(--bubble-radius) !important;
+}
+
+[class*="embedWrapper-"],
+[class*="attachment-"],
+[class*="container-"][class*="embed"],
+[class*="fileWrapper-"] {
+  background: rgba(20,22,26,0.42) !important;
+  border: 1px solid var(--bubble-border) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Barre de séparation (dates) plus soft */
+[class*="divider-"] {
+  background: rgba(0,0,0,0.28) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  border-radius: 999px !important;
+  padding: 2px 10px !important;
+}
+
+/* =========================
+   ZONE DE SAISIE + SEARCH + POPUPS
+   ========================= */
+[class*="form-"],
+[class*="scrollableContainer"],
+[class*="searchBar-"],
+[class*="container-"][class*="themed-"] {
+  background: rgba(20,22,26,0.42) !important;
+  border: 1px solid var(--bubble-border) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+/* Popouts & modals */
+[class*="popout-"],
+[class*="layerContainer-"] [class*="root-"],
+[class*="modal-"] {
+  background: rgba(12,14,18,0.55) !important;
+  border: 1px solid var(--bubble-border) !important;
+  border-radius: 14px !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* =========================
+   LISTE DE CANAUX + HOVERS
+   ========================= */
+[class*="containerDefault-"] [class*="link-"] {
+  border-radius: 10px !important;
+}
+[class*="modeSelected"] > [class*="link-"],
+[class*="modeSelected"] {
+  background: color-mix(in hsl, var(--main-color) 18%, transparent) !important;
+}
+[class*="modeUnreadImportant"] > [class*="link-"] {
+  background: color-mix(in hsl, var(--main-color) 14%, transparent) !important;
+}
+[class*="containerDefault-"] [class*="link-"]:hover {
+  background: color-mix(in hsl, var(--hover-color) 16%, transparent) !important;
+}
+
+/* =========================
+   SCROLLBARS DISCRÈTES
+   ========================= */
+:root *::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+:root *::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.18) !important;
+  border: 2px solid transparent !important;
+  border-radius: 999px !important;
+  background-clip: padding-box !important;
+}
+:root *::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+/* =========================
+   FALLBACK (si backdrop-filter indisponible)
+   ========================= */
+@supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
+  :root {
+    --bubble-bg: rgba(20,22,26,0.72);
+    --chrome-bg: rgba(12,14,18,0.62);
+  }
+}
