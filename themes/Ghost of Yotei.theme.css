@@ -1,82 +1,61 @@
 /**
  * @name Ghost of Yotei
  * @author zow.py
- * @version 1.0.1
- * @description ClearVision v7 + bulles de messages effet verre/flou, palette douce et fond perso (Mt. Yotei vibes). Inclut correctifs d’avatars.
- * @source https://github.com/ClearVision/ClearVision-v7
- * @website https://clearvision.github.io
- * @invite dHaSxn3
+ * @version 2.0.0
+ * @description A modern Discord theme featuring glassmorphism chat bubbles, a soft color palette, and a custom Mt. Yotei background. Includes improved avatar alignment and layout spacing.
+ * @source https://github.com/zoowprime/betterdiscord/tree/main/themes
+ * @updateUrl https://raw.githubusercontent.com/zoowprime/betterdiscord/main/themes/Ghost%20of%20Yotei.theme.css
  */
 
-/* --- ClearVision v7 --- */
-@import url("https://clearvision.github.io/ClearVision-v7/main.css");
-@import url("https://clearvision.github.io/ClearVision-v7/betterdiscord.css");
-
 /* =========================
-   OVERRIDES & RÉGLAGES GLOBAUX
+   GLOBAL BACKGROUND
    ========================= */
 :root {
-  /* --- IMAGE DE FOND --- */
-  --background-image: url("https://i.imgur.com/K2gnTab.png") !important;
-  --background-position: center !important;
-  --background-size: cover !important;
-  --background-attachment: fixed !important;
-
-  /* Moins d’assombrissement ClearVision pour mieux voir l’image (0% → 100%) */
-  --background-shading-percent: 25% !important;
-
-  /* Filtre général appliqué au fond (ajoute blur(2px) si tu veux un fond plus soft) */
-  --background-filter: saturate(calc(var(--saturation-factor, 1) * 1))
-                       brightness(1)
-                       contrast(1);
-
-  /* --- PALETTE + LISIBILITÉ --- */
-  /* Accent très doux (neutre/froid) */
-  --main-color: #86a3ff !important;
-  --hover-color: #6c88e6 !important;
-  --success-color: #58c49a !important;
-  --danger-color: #b85b5b !important;
-
-  /* Texte moins agressif */
-  --normal-text: #e7e7ea !important;
-  --muted-text: #b7b7bf !important;
-
-  /* États de canaux */
-  --channel-selected-bg: color-mix(in hsl, var(--main-color) 32%, transparent) !important;
-  --channel-unread: var(--main-color) !important;
-  --channel-unread-hover: var(--hover-color) !important;
-
-  /* --- PARAMS “BULLES” --- */
+  --bg-image: url("https://i.imgur.com/K2gnTab.png");
+  --bg-color: rgba(0, 0, 0, 0.4);
+  --accent-color: #86a3ff;
+  --accent-hover: #6c88e6;
+  --success-color: #58c49a;
+  --danger-color: #b85b5b;
+  --text-normal: #e7e7ea;
+  --text-muted: #b7b7bf;
   --bubble-bg: rgba(20, 22, 26, 0.46);
   --bubble-border: rgba(255, 255, 255, 0.08);
   --bubble-radius: 14px;
   --bubble-blur: 10px;
   --bubble-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
-
-  /* Densité d’espacement vertical entre messages (px) */
   --bubble-gap: 8px;
-
-  /* Intensité du verre dépoli pour zones système */
   --chrome-bg: rgba(12, 14, 18, 0.38);
   --chrome-blur: 8px;
   --chrome-border: rgba(255, 255, 255, 0.06);
 }
 
+/* Background image */
+html, body, [class*="app-"], [class*="appMount"] {
+  background: transparent !important;
+}
+
+[class*="appMount"]::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--bg-image) no-repeat center center / cover fixed;
+  z-index: -1;
+}
+
 /* =========================
-   TRANSPARENCE DE BASE
+   BASIC TRANSPARENCY
    ========================= */
-[class*="app-"],
 [class*="layers-"],
 [class*="content-"],
 [class*="sidebar-"],
 [class*="chat-"],
 [class*="messagesWrapper"],
-[class*="scrollerInner-"],
-[class*="container-"] {
+[class*="scrollerInner-"] {
   background: transparent !important;
 }
 
-/* En-têtes/footers/panneaux “chrome” en verre */
+/* Panels and side areas */
 [class*="title-"],
 [class*="panels-"],
 [class*="containerWithMargin"],
@@ -89,9 +68,8 @@
 }
 
 /* =========================
-   BULLES DE MESSAGES
+   CHAT BUBBLES
    ========================= */
-/* Fait en sorte que chaque item puisse afficher l’avatar sans rognage */
 [class*="messageListItem"],
 [class*="messageListItem"] > *,
 [class*="messageListItem"] > [class*="message-"],
@@ -99,7 +77,6 @@
   overflow: visible !important;
 }
 
-/* Réserve de l’espace à gauche pour l’avatar (cozy layout) */
 [class*="cozyMessage"] [class*="messageContent-"],
 [class*="cozyMessage"] [class*="contents-"] {
   position: relative;
@@ -119,27 +96,24 @@
   transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
 }
 
-/* Décale légèrement la bulle pour laisser l’avatar respirer */
 [class*="cozyMessage"] > [class*="message-"],
 [class*="cozyMessage"] article {
-  margin-left: 56px !important; /* largeur avatar (40) + marge */
+  margin-left: 56px !important;
 }
 
-/* Hover subtil sur la bulle */
 [class*="messageListItem"] > [class*="message-"]:hover,
 [class*="messageListItem"] article:hover {
   transform: translateY(-1px);
   box-shadow: 0 12px 26px rgba(0,0,0,0.32);
 }
 
-/* Contenu plus aéré */
 [class*="messageContent-"] {
   line-height: 1.55 !important;
   letter-spacing: 0.1px !important;
 }
 
 /* =========================
-   AVATARS — correctifs placement/rognage
+   AVATAR FIXES
    ========================= */
 [class*="cozyMessage"] [class*="avatar-"],
 [class*="cozyMessage"] [class*="avatarDecoration"],
@@ -147,7 +121,7 @@
   position: absolute !important;
   left: 12px !important;
   top: 0 !important;
-  transform: translateY(6px); /* centre vertical approximatif vis-à-vis de la bulle */
+  transform: translateY(6px);
   width: 40px !important;
   height: 40px !important;
   border-radius: 50% !important;
@@ -156,19 +130,18 @@
   box-shadow: 0 2px 10px rgba(0,0,0,.35);
 }
 
-/* S’assure que la ligne de message laisse passer l’avatar */
 [class*="messageListItem"] {
   position: relative !important;
-  min-height: 52px; /* avatar 40 + marges */
+  min-height: 52px;
   display: block !important;
 }
 
 /* =========================
-   MENTIONS / EMBEDS / DIVERS
+   MENTIONS / EMBEDS
    ========================= */
 [class*="mentioned-"] {
-  background: color-mix(in hsl, var(--main-color) 16%, transparent) !important;
-  border-left: 3px solid var(--main-color) !important;
+  background: color-mix(in hsl, var(--accent-color) 16%, transparent) !important;
+  border-left: 3px solid var(--accent-color) !important;
   padding-left: 10px !important;
   border-top-left-radius: var(--bubble-radius) !important;
   border-bottom-left-radius: var(--bubble-radius) !important;
@@ -185,7 +158,6 @@
   -webkit-backdrop-filter: blur(8px) !important;
 }
 
-/* Barre de séparation (dates) plus soft */
 [class*="divider-"] {
   background: rgba(0,0,0,0.28) !important;
   backdrop-filter: blur(6px) !important;
@@ -195,7 +167,7 @@
 }
 
 /* =========================
-   ZONE DE SAISIE + SEARCH + POPUPS
+   INPUT AREAS & POPOUTS
    ========================= */
 [class*="form-"],
 [class*="scrollableContainer"],
@@ -208,7 +180,6 @@
   -webkit-backdrop-filter: blur(8px) !important;
 }
 
-/* Popouts & modals */
 [class*="popout-"],
 [class*="layerContainer-"] [class*="root-"],
 [class*="modal-"] {
@@ -220,24 +191,24 @@
 }
 
 /* =========================
-   LISTE DE CANAUX + HOVERS
+   CHANNEL LIST
    ========================= */
 [class*="containerDefault-"] [class*="link-"] {
   border-radius: 10px !important;
 }
 [class*="modeSelected"] > [class*="link-"],
 [class*="modeSelected"] {
-  background: color-mix(in hsl, var(--main-color) 18%, transparent) !important;
+  background: color-mix(in hsl, var(--accent-color) 18%, transparent) !important;
 }
 [class*="modeUnreadImportant"] > [class*="link-"] {
-  background: color-mix(in hsl, var(--main-color) 14%, transparent) !important;
+  background: color-mix(in hsl, var(--accent-color) 14%, transparent) !important;
 }
 [class*="containerDefault-"] [class*="link-"]:hover {
-  background: color-mix(in hsl, var(--hover-color) 16%, transparent) !important;
+  background: color-mix(in hsl, var(--accent-hover) 16%, transparent) !important;
 }
 
 /* =========================
-   SCROLLBARS DISCRÈTES
+   SCROLLBARS
    ========================= */
 :root *::-webkit-scrollbar {
   width: 10px !important;
@@ -254,7 +225,7 @@
 }
 
 /* =========================
-   FALLBACK (si backdrop-filter indisponible)
+   FALLBACK (no backdrop-filter)
    ========================= */
 @supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
   :root {
