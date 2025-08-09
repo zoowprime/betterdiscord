@@ -1,0 +1,228 @@
+/**
+ * @name Ghost of Tsushima (Translucence Base)
+ * @author zow.py
+ * @version 1.0.0
+ * @description Translucent/frosted theme inspired by Ghost of Tsushima: lycoris-red sunset palette, glass chat bubbles, soft glow (no blue), and refined avatar/layout fixes.
+ * @source https://github.com/zoowprime/betterdiscord/tree/main/themes/Ghost%20of%20Tsushima
+ * @updateUrl https://raw.githubusercontent.com/zoowprime/betterdiscord/main/themes/Ghost%20of%20Tsushima/Ghost%20of%20Tsushima.theme.css
+ */
+
+/* === Base Translucence by CapnKitten === */
+@import url(https://capnkitten.github.io/BetterDiscord/Themes/Translucence/css/source.css);
+
+/* =========================================================
+   Ghost of Tsushima — variables (rouge/violet, lycoris)
+   ========================================================= */
+:root {
+  /* --- Wallpaper / app container --- */
+  --app-bg: url(https://i.imgur.com/Ozh5l7V.jpeg);
+  --app-blur: 8px;
+  --app-margin: 24px;
+  --app-radius: 12px;
+
+  /* --- Accent principal : rouge lycoris (crimson/magenta sunset) --- */
+  /* Teinte principale (rouge cramoisi) */
+  --accent-hue: 345;
+  --accent-saturation: 85%;
+  --accent-lightness: 62%;
+  --accent-opacity: 1;
+  --accent-text-color: hsl(0 0% 0%); /* texte sur boutons accentués */
+
+  /* Couleur secondaire (violet doux pour halos/hover) */
+  --accent2-hue: 300;
+  --accent2-saturation: 70%;
+  --accent2-lightness: 66%;
+
+  /* --- Zones principales --- */
+  --sidebar-color: hsl(0 0% 0% / 0.45);
+  --main-content-color: hsl(0 0% 0% / 0.24);
+
+  /* --- Messages (bulles) --- */
+  --message-color: hsl(0 0% 0% / 0.42);
+  --message-radius: 14px;
+  --message-padding-top: 10px;
+  --message-padding-side: 12px;
+
+  /* --- Replies / mentions --- */
+  --reply-hue: var(--accent-hue);
+  --reply-saturation: var(--accent-saturation);
+  --reply-lightness: var(--accent-lightness);
+  --reply-opacity: .25;
+
+  /* --- Zone de saisie --- */
+  --textarea-color: 255,255,255;
+  --textarea-alpha: 0.10;
+  --textarea-alpha-focus: 0.16;
+  --textarea-text-color: hsl(0 0% 100%);
+  --textarea-radius: 14px;
+
+  /* --- Cartes / popouts --- */
+  --card-color: hsl(0 0% 0% / 0.42);
+  --card-color-hover: hsl(0 0% 0% / 0.52);
+  --card-color-select: hsl(0 0% 0% / 0.70);
+
+  /* --- Boutons --- */
+  --button-height: 32px;
+  --button-padding: 0 16px;
+  --button-action-color: hsl(0 0% 0%);
+  --button-radius: 16px;
+
+  /* --- Halo/glow autour des bulles et éléments actifs (plus de bleu) --- */
+  --glow-outer: 0 0 22px hsla(var(--accent2-hue) var(--accent2-saturation) var(--accent2-lightness) / .35),
+               0 0 10px hsla(var(--accent-hue) var(--accent-saturation) var(--accent-lightness) / .45);
+  --glow-border: 1px solid hsla(var(--accent2-hue) var(--accent2-saturation) var(--accent2-lightness) / .35);
+}
+
+/* Thème sombre — lisibilité globale (aucun bleu) */
+.visual-refresh.theme-dark {
+  --text-primary: hsl(0 0% 98%);
+  --text-secondary: hsl(0 0% 78%);
+
+  --channels-default: hsl(0 0% 75%);
+  --channel-icon: hsl(0 0% 75%);
+
+  --icon-primary: hsl(0 0% 96%);
+  --icon-secondary: hsl(0 0% 86%);
+  --icon-tertiary: hsl(0 0% 73%);
+
+  --interactive-normal: hsl(0 0% 82%);
+  --interactive-hover: hsl(0 0% 94%);
+  --interactive-active: hsl(0 0% 100%);
+  --interactive-muted: hsl(0 0% 42%);
+
+  --background-modifier-hover: hsl(0 0% 100% / .075);
+  --background-modifier-selected: hsl(0 0% 100% / .12);
+}
+
+/* =========================================================
+   Finitions Tsushima — verre, bulles, halos rouge/violet
+   (complète Translucence et remplace le bleu par nos teintes)
+   ========================================================= */
+
+/* Bulles “verre dépoli” + halo rouge/violet */
+[class*="messageListItem"] > [class*="message-"],
+[class*="messageListItem"] article {
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border-radius: var(--message-radius);
+  border: var(--glow-border);
+  box-shadow: var(--glow-outer);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease, border-color .12s ease;
+}
+[class*="messageListItem"] > [class*="message-"]:hover,
+[class*="messageListItem"] article:hover {
+  box-shadow: 0 0 26px hsla(var(--accent-hue) var(--accent-saturation) var(--accent-lightness) / .55),
+              0 0 12px hsla(var(--accent2-hue) var(--accent2-saturation) var(--accent2-lightness) / .55);
+  transform: translateY(-1px);
+}
+
+/* Décalage pour avatar (cozy) */
+[class*="cozyMessage"] > [class*="message-"],
+[class*="cozyMessage"] article { margin-left: 56px; }
+
+/* Avatars bien alignés et non rognés */
+[class*="cozyMessage"] [class*="avatar-"],
+[class*="cozyMessage"] [class*="avatarDecoration"],
+[class*="messageListItem"] [class*="avatar-"] {
+  position: absolute !important;
+  left: 12px !important;
+  top: 0 !important;
+  transform: translateY(6px);
+  width: 40px !important; height: 40px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  z-index: 2 !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+[class*="messageListItem"] { position: relative; min-height: 52px; display: block; }
+
+/* Mentions / replies dans la palette rouge/violet */
+[class*="mentioned-"] {
+  background: color-mix(in hsl,
+    hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness)) 18%,
+    transparent) !important;
+  border-left: 3px solid hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness)) !important;
+  padding-left: 10px;
+  border-top-left-radius: var(--message-radius);
+  border-bottom-left-radius: var(--message-radius);
+}
+
+/* Liens en magenta/rouge doux */
+a { color: hsl(var(--accent2-hue) var(--accent2-saturation) var(--accent2-lightness)) !important; }
+a:hover { color: hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness)) !important; }
+
+/* Embeds / pièces jointes assortis (pas de bleu) */
+[class*="embedWrapper-"],
+[class*="attachment-"],
+[class*="container-"][class*="embed"],
+[class*="fileWrapper-"] {
+  background: hsl(0 0% 0% / 0.42) !important;
+  border: var(--glow-border) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  box-shadow: 0 0 14px hsla(var(--accent2-hue) var(--accent2-saturation) var(--accent2-lightness) / .25);
+}
+
+/* Barres système (dates) adoucies */
+[class*="divider-"] {
+  background: hsl(0 0% 0% / .28) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  border-radius: 999px !important;
+  padding: 2px 10px !important;
+}
+
+/* Zone de saisie en verre, bord rouge/violet léger */
+[class*="form-"],
+[class*="scrollableContainer"],
+[class*="searchBar-"] {
+  border: var(--glow-border);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 0 14px hsla(var(--accent2-hue) var(--accent2-saturation) var(--accent2-lightness) / .25);
+}
+
+/* Liste de canaux : sélection/hover en rouge/violet (zéro bleu) */
+[class*="containerDefault-"] [class*="link-"] { border-radius: 10px; }
+[class*="modeSelected"] > [class*="link-"],
+[class*="modeSelected"] {
+  background: color-mix(in hsl,
+    hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness)) 18%,
+    transparent) !important;
+}
+[class*="modeUnreadImportant"] > [class*="link-"] {
+  background: color-mix(in hsl,
+    hsl(var(--accent2-hue) var(--accent2-saturation) var(--accent2-lightness)) 16%,
+    transparent) !important;
+}
+[class*="containerDefault-"] [class*="link-"]:hover {
+  background: color-mix(in hsl,
+    hsl(var(--accent2-hue) var(--accent2-saturation) var(--accent2-lightness)) 22%,
+    transparent) !important;
+}
+
+/* Scrollbars discrètes */
+:root *::-webkit-scrollbar { width: 10px; height: 10px; }
+:root *::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.18);
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+:root *::-webkit-scrollbar-track { background: transparent; }
+
+/* ===== Fallback fond si jamais l'import échoue ===== */
+html, body { background: transparent !important; }
+#app-mount { position: relative; z-index: 0; }
+#app-mount::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: var(--app-bg) no-repeat center / cover fixed;
+  filter: blur(var(--app-blur));
+  z-index: -1;
+  pointer-events: none;
+}
+
